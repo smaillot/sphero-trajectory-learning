@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[rightcaption]{sidecap}
+
+\usepackage{hyperref}
+
+\title{Robot Learning - Short Project}
+\author{Théo Desquins - Stéphane Maillot - Hu Xiaoxuan}
+\date{November 2017}
+
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\input{glossary}
+\input{acronym}
+
+
+\setcounter{secnumdepth}{0}
+\begin{document}
+
+\maketitle
+
+
+\vfill
+\tableofcontents
+
+\newpage
+\twocolumn
+
+\input{part1}
+
+
+\clearpage
+\printglossary[type=\acronymtype]
+\listoffigures
+\listoftables
+\printglossary
+
+\end{document}
