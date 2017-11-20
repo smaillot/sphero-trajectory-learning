@@ -1,0 +1,3 @@
+[submodule "sphero-video-pose-estimation"]
+	path = sphero-video-pose-estimation
+	url = https://github.com/smaillot/sphero-video-pose-estimation
