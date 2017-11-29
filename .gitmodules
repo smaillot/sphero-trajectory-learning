@@ -1,0 +1,9 @@
+[submodule "sphero-video-pose-estimation"]
+	path = sphero-video-pose-estimation
+	url = https://github.com/smaillot/sphero-video-pose-estimation
+[submodule "report"]
+	path = report
+	url = https://git.overleaf.com/12107077wyydwzdrnwck
+[submodule "DMP-LWR"]
+	path = DMP-LWR
+	url = https://github.com/Lagerbe/DMP-LWR.git
