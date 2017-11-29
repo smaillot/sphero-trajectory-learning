@@ -24,5 +24,8 @@ function input_matrix=gen_trajectory(r,Xo,Yo,alpho,tau,resolution)
         end
         
     end
+    speed
+    alpha
+    timec
     input_matrix=cat(1,speed,alpha,timec);
 end
