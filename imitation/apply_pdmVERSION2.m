@@ -87,26 +87,27 @@ if x=='y'
     % position x and y
 %    time_period=take_move(freq,1,50);
 end
-%[tau,data]=get_data();
-tau = t(end);
-data.x = double(x);
-data.y = double(y);
-data.ax = ax;
-data.ay = ay;
-dt = diff(t);
-dx = diff(x) ./ dt;
-dy = diff(y) ./ dt;
-data.vx = dx;
-data.vy = dy;
+[tau,data]=get_data2();
+
+% tau = t(end);
+% data.x = double(x);
+% data.y = double(y);
+% data.ax = ax;
+% data.ay = ay;
+% dt = diff(t);
+% dx = diff(x) ./ dt;
+% dy = diff(y) ./ dt;
+% data.vx = dx;
+% data.vy = dy;
 %% resize
-data.t = data.t(3:end);
-data.x = data.x(3:end);
-data.y = data.y(3:end);
+% data.t = data.t(3:end);
+% data.x = data.x(3:end);
+% data.y = data.y(3:end);
 
 
 dlg_title="choose parameter";
 prompt={'K, Stifness coefficient', 'D, Damping coefficient', 'ng, number of gaussian', 'as, decrease of the time dx/dt = as*x','s, initial time'};
-default={'10','5','20','1','1'};
+default={'500','100','100','1','1'};
 uiwait(msgbox('Choose parameter','Parameter','modal'))
 num_lines = 1;
 answer= inputdlg(prompt,dlg_title,num_lines, default);
@@ -115,12 +116,38 @@ r=dmpTrain(data, par);
 wx=r.w_x;
 wy=r.w_y;
 
-%% 
-Xo=0;
-Yo=0;
-alpho=0;
-resolution=100;
-input_matrix=gen_trajectory(r,Xo,Yo,alpho,tau,resolution);
+%% Test the imiation 
+
+% In this part I put the test function of alpx then I take the result to
+% give the command of the Sphero
+
+% k is to choose what you want to plot, k=1 (x, x_replay as function of
+% time), k=3 (y, y_replay as function of time), k=14 (the curbs (x,y) and
+% (x_replay, y_replay)
+
+k=14;
+
+result=dmpReplay(r);
+result.options=[k];
+res=dmpPlot(data, result);
+
+% Now we generate the command matrix of the Sphero (1rst line is the speed,
+% 2nd line is the angle, 3rd line is the time)
+speed=[];
+alpha=[];
+for k=1:length(result.yd_xr)
+speed=[speed, norm(result.yd_xr(k),result.yd_yr(k))];
+alpha=[alpha, atan2(result.yd_yr(k),result.yd_xr(k))];
+end
+command_matrix=cat(1,speed,alpha,result.times);
+
+
+
+% Xo=0;
+% Yo=0;
+% alpho=0;
+% resolution=100;
+%input_matrix=gen_trajectory(r,Xo,Yo,alpho,tau,resolution);
 
 % prompt='You have the choice \n 1) Learning by imitation \n 2) Learning by reinforcement';
 % x=inputdlg(prompt)
@@ -146,9 +173,7 @@ input_matrix=gen_trajectory(r,Xo,Yo,alpho,tau,resolution);
 % % Both should return the list of weights associated to the bases functions 
 % 
 % % We get 2 vectors, the vector THETA and the vector of the Basis Function
-% 
-% 
-% 
+
 
 
 
