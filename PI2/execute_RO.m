@@ -25,6 +25,17 @@ function data=execute_RO(control, init_pos, g, K)
             command=cat(1,com_speed,com_angle,g.times);
             
             %% Command Part of Susana
+            % Here you have the the matrix command. 
+            %The firstline is the amplitude of the speed, the second line
+            %is the angle and the last line is the time of application of
+            %the command.
+            
+            
+            % For the output we would like the position of the robot and
+            % the time when the measure was taken in a matrix (the first
+            % line is the x position, the second line is the y position and
+            % the last line is the time of aquisition of the position. And 
+            % this for each roll out. (A list of matrix)  
             
         
         %% End of command part

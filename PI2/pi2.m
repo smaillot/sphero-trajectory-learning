@@ -26,10 +26,10 @@ function theta = pi2(r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
         
         R_last=R;
         
-        [Path_weight, R]=asso_to_weight();
+        [Path_weight,M, R]=asso_to_weight();
         
         if abs(R - R_last) > tolerance
-            theta=update_PI2();
+            theta=update_PI2(Path_weight, M);
         end
     end
     
