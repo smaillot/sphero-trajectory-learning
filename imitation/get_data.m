@@ -1,6 +1,6 @@
-function [tau,data]=get_data()
+function [tau,data]=get_data(name)
     % Preparation of the data
-    load("sensor2.mat");
+    load(name);
     
 %     data.ax=ax;
 %     data.ay=ay;
