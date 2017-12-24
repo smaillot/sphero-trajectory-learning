@@ -1,6 +1,7 @@
-function theta = pi2(r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
+function theta = pi2(param,r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
     % parameters :
     % r : immediate cost, 
+    %theta_i, initial weights of the basis function
     % phi : terminal cost, 
     % g : basis function from the system dynamics, contain h, c and time 
     % sigma : variance of the mean-zero noise
@@ -10,18 +11,17 @@ function theta = pi2(r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
     % gamma: the reduction of the variance of the noise with the number of
     % roll out
     % nb_update: number of update of the parameters
+    % param contain the parameters of the dynamical equation, K, D, tau, dt
     addpath('../DMP-LWR')
     
     tolerance = 1e-5;
     R_last = -1;
     R = 0;
-    K=5;
-    gamma=0.95;
     nb_update=0;
     theta=theta_i;
     while abs(R - R_last) > tolerance
 
-        control=rollout(K, sigma, gamma, nb_update, theta_i, g);
+        control=rollout_command(param,init_pos, K, sigma, gamma, nb_update, theta_i, g);
         data=execute_RO(control, init_pos, g); 
         
         R_last=R;
@@ -29,7 +29,7 @@ function theta = pi2(r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
         [Path_weight,M, R]=asso_to_weight();
         
         if abs(R - R_last) > tolerance
-            theta=update_PI2(Path_weight, M);
+            theta=update_PI2( theta_i, control, Path_weight, M, K, g)
         end
     end
     

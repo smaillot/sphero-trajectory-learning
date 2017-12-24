@@ -5,17 +5,19 @@ function data=execute_RO(control, init_pos, g, K)
     uiwait(msgbox('execute the first roll out?','Data_Collecting','modal'))
     x=inputdlg(prompt);
     x=x{1};
+    com_speed=[];
+    com_angle=[];
     for k=1:K
         speed.x=[];
         speed.y=[];
         com_speed=[];
         com_angle=[];
-        if x='y'
+        if x=='y'
             for j=1:2
                 if j==1
-                    speed.x=control.x{k};
+                    speed.x=control{k}{1};
                 else
-                    speed.y=control.y{k};
+                    speed.y=control{k}{3};
                 end
             end
             for i=1:length(g.times)
