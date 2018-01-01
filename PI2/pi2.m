@@ -22,6 +22,7 @@ function theta = pi2(param,r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
     while abs(R - R_last) > tolerance
 
         control=rollout_command(param,init_pos, K, sigma, gamma, nb_update, theta_i, g);
+        plot_trajectory(control)
         data=execute_RO(control, init_pos, g); 
         
         R_last=R;
@@ -29,8 +30,7 @@ function theta = pi2(param,r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
         [Path_weight,M, R]=asso_to_weight();
         
         if abs(R - R_last) > tolerance
-            theta=update_PI2( theta_i, control, Path_weight, M, K, g)
+            theta=update_PI2( theta_i, control, Path_weight, M, K, g);
         end
     end
-    
 end
