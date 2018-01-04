@@ -1,7 +1,7 @@
 function theta = pi2(param,r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
     % parameters :
     % r : immediate cost, 
-    %theta_i, initial weights of the basis function
+    % theta_i, initial weights of the basis function
     % phi : terminal cost, 
     % g : basis function from the system dynamics, contain h, c and time 
     % sigma : variance of the mean-zero noise
