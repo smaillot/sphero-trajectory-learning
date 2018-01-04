@@ -25,8 +25,8 @@ function struct=genDesiredTrajectory(n, resolution)
     end
     d.stime=movement(3,:);
     times=gen_time(resolution,d);
-    struct.x=interp1(d.stime,movement(1,:),timec);
-    struct.y=interp1(d.stime,movement(2,:),timec);
+    struct.x=interp1(d.stime,movement(1,:),times);
+    struct.y=interp1(d.stime,movement(2,:),times);
     struct.times=times;
     plot(struct.x,struct.y)
     
