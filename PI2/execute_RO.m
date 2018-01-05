@@ -1,4 +1,4 @@
-function data=execute_RO(control, init_pos, g, K)
+function data=execute_RO(control, init_pos, g, K,data)
     % We have g a structure with 3 lists. The first one is c for all the
     % gaussian, then h and the time
     prompt='Begin ? {y/n}';
@@ -27,12 +27,19 @@ function data=execute_RO(control, init_pos, g, K)
             command=cat(1,com_speed,com_angle,g.times);
             
             %% Command Part of Susana
+            a=cputime;
+            % send command to sphero
+            sph.Motiontimeout=0.2;
+            roll(sph,command(1),command(2));
             % Here you have the the matrix command. 
             %The firstline is the amplitude of the speed, the second line
             %is the angle and the last line is the time of application of
             %the command.
             
-            
+             % get sensor data
+            [xcur, ycur, ~, ~, ~] = sph.readLocator();
+            s = [double(xcur);double(ycur);command(3)+cputime-a];
+            data=[data,s];
             % For the output we would like the position of the robot and
             % the time when the measure was taken in a matrix (the first
             % line is the x position, the second line is the y position and
@@ -51,5 +58,4 @@ function data=execute_RO(control, init_pos, g, K)
             break;
         end
     end
-    
     
