@@ -1,7 +1,7 @@
 function theta_i=update_PI2( theta_i, control, Path_weight, M, K, g)
     % This function update the theta
     % Initialization 
-    theta={}
+    theta={};
     theta{1}=[];
     theta{2}=[];
     dtheta={};
