@@ -14,8 +14,8 @@ function M = compute_M (g)
     M = zeros(size(g, 1), size(g, 1), size(g, 2), size(g, 3));
     for t=1:size(g, 3)
         for j=1:size(g, 2)
-            g = g(:,j,t);
-            M(:,:,j,t) = R \ (g * g' / (g' / R * g));
+            g1 = g(:,j,t);
+            M(:,:,j,t) = R \ (g1 * g1' / (g1' / R * g1));
         end
     end
 end
