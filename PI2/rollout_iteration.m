@@ -1,10 +1,12 @@
-function [ M, S, P ] = rollout_iteration( theta, r, data )
+function [ M, S, P ] = rollout_iteration( theta, r, data)
+% addpath('../DMP-LWR')
+
 %ROLLOUT_ITERATION roolout iteration to run for each k in K
     % create epsillon vect
     g = basis_function(r, data);
     M = compute_M(g);
     S = compute_S('...');
-    P = compute_P(S);
+    P = compute_P(T);
 end
 
 function M = compute_M (g)
@@ -12,14 +14,34 @@ function M = compute_M (g)
     M = zeros(size(g, 1), size(g, 1), size(g, 2), size(g, 3));
     for t=1:size(g, 3)
         for j=1:size(g, 2)
-            g2 = g(:,j,t);
-            M(:,:,j,t) = R \ (g2 * g2' / (g2' / R * g2));
+            g = g(:,j,t);
+            M(:,:,j,t) = R \ (g * g' / (g' / R * g));
         end
     end
 end
 
-function S = compute_S ()
-    S = 
+function S = compute_S (g,M)
+addpath('../DMP-LWR')
+    R = eye(size(g,1));
+    e = random('norm',0,0.02); % zero mean noise
+    for i = 1:(size(g,2)-1)
+        for j=1:(size(g,3)-1)
+        sum1 = sum1 + q;
+        end
+    end
+    
+    for i = 1:size(g,3)
+        for j=1:size(g,2)
+        sum2 = (theta+M(:,:,i,j)*e)'*R*(theta+M(:,:,i,j)*e);
+        end
+    end
+
+    for i=1:size(g,3)
+        for j=1:size(g,2)
+        S(:,i,j) = phi + sum1(j) + sum2(j);
+        end
+    end
+   
 end
 
 function P=compute_P(S, r)
