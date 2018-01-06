@@ -20,10 +20,10 @@ function M = compute_M (g)
     end
 end
 
-function S = compute_S (g,M)
+function S = compute_S (g, theta, M, q)
 addpath('../DMP-LWR')
     R = eye(size(g,1));
-    e = random('norm',0,0.02); % zero mean noise
+    e = random('norm',0,0.02,2,length(theta)); % zero mean noise
     for i = 1:(size(g,2)-1)
         for j=1:(size(g,3)-1)
         sum1 = sum1 + q;
