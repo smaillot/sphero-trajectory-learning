@@ -1,8 +1,8 @@
 function input_struct=init_PI2_learning()
     %% PMD parameter
     dlg_title="choose PMD parameter";
-    prompt={'ng, number of gaussian', 'as, decrease of the time dx/dt = as*x','s, initial time'};
-    default={'20','1','1'};
+    prompt={'ng, number of gaussian', 'as, decrease of the time dx/dt = as*x','s, initial time','K, Stifness coefficient', 'D, Damping coefficient'};
+    default={'20','1','1','5000','500'};
     uiwait(msgbox('Choose PMD parameter','Parameter','modal'))
     num_lines = 1;
     answer= inputdlg(prompt,dlg_title,num_lines, default);
@@ -10,6 +10,8 @@ function input_struct=init_PI2_learning()
     input_struct.PMD.ng=str2num(answer{1});
     input_struct.PMD.as=str2num(answer{2});
     input_struct.PMD.s=str2num(answer{3});
+    input_struct.PMD.K=str2num(answer{3});
+    input_struct.PMD.D=str2num(answer{3});
     %% Cost function parameter
     
     dlg_title="choose cost function parameter";
@@ -38,6 +40,16 @@ function input_struct=init_PI2_learning()
     input_struct.nb_roll_out.K=str2num(answer3{1});
     
     %% initial parameter (Theta)
+    
+    dlg_title="choose initial weights of your basis functions";
+    a='Enter your vector of weights [ ; ; ;... ; ] (';
+    b='times)';
+    prompt={cat(2,a,num2str(g.ng),b)};
+    uiwait(msgbox('Choose initial weights','Parameter','modal'))
+    num_lines = 1;
+    answer= inputdlg(prompt,dlg_title,num_lines, default);
+    theta_i=str2num(answer);
+    
 end
 
 function psi_N=terminal_cost(final_point,goal_point, penalization)

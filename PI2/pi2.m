@@ -15,22 +15,23 @@ function theta = pi2(param,r, phi, a, g, sigma, theta_i, K, init_pos, gamma)
     addpath('../DMP-LWR')
     
     tolerance = 1e-5;
-    R_last = -1;
-    R = 0;
+    S_last = -1;
+    S = 0;
     nb_update=0;
     theta=theta_i;
-    while abs(R - R_last) > tolerance
+    while abs(S - S_last) > tolerance
 
         control=rollout_command(param,init_pos, K, sigma, gamma, nb_update, theta_i, g);
         plot_trajectory(control)
-        data=execute_RO(control, init_pos, g); 
+   %     data=execute_RO(control, init_pos, g); % in commentary when we
+   %     test the algorithm
         
-        R_last=R;
+        S_last=S;
         
-        [Path_weight,M, R]=asso_to_weight();
+        [ M, S, P ] = rollout_iteration( theta, r, data);
         
-        if abs(R - R_last) > tolerance
-            theta=update_PI2( theta_i, control, Path_weight, M, K, g);
+        if max(S - S_last) > tolerance
+            theta=update_PI2( theta_i, control, P, M, K, g);
         end
     end
 end

@@ -7,6 +7,7 @@ function struct=genDesiredTrajectory(n, resolution)
     addpath(['../imitation']);
     addpath(['../DMP-LWR']);
     movement=[];
+    struct=[];
     for k=0:n
         if k==0
             prompt={'select initial point [X;Y]'};
@@ -25,9 +26,9 @@ function struct=genDesiredTrajectory(n, resolution)
     end
     d.stime=movement(3,:);
     times=gen_time(resolution,d);
-    struct.x=interp1(d.stime,movement(1,:),times);
-    struct.y=interp1(d.stime,movement(2,:),times);
-    struct.times=times;
-    plot(struct.x,struct.y)
+    struct(1,:)=interp1(d.stime,movement(1,:),times);
+    struct(2,:)=interp1(d.stime,movement(2,:),times);
+    struct(3,:)=times;
+    plot(struct(1,:),struct(2,:))
     
     

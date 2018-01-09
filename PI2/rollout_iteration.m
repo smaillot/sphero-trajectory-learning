@@ -1,12 +1,12 @@
-function [ M, S, P ] = rollout_iteration( theta, r, data)
+function [ M, S, P ] = rollout_iteration( theta, r, data, control, desired_traj)
 % addpath('../DMP-LWR')
 
 %ROLLOUT_ITERATION roolout iteration to run for each k in K
     % create epsillon vect
     g = basis_function(r, data);
     M = compute_M(g);
-    S = compute_S('...');
-    P = compute_P(T);
+    S = compute_S(g, theta, M, control, desired_traj);
+    P = compute_P(S);
 end
 
 function M = compute_M (g)
@@ -14,19 +14,20 @@ function M = compute_M (g)
     M = zeros(size(g, 1), size(g, 1), size(g, 2), size(g, 3));
     for t=1:size(g, 3)
         for j=1:size(g, 2)
-            g = g(:,j,t);
-            M(:,:,j,t) = R \ (g * g' / (g' / R * g));
+            g1 = g(:,j,t);
+            M(:,:,j,t) = R \ (g1 * g1' / (g1' / R * g1));
         end
     end
 end
 
-function S = compute_S (g, theta, M, q)
-addpath('../DMP-LWR')
+function S = compute_S (g, theta, M, control, desired_traj)
+    addpath('../DMP-LWR')
+    S=[];
     R = eye(size(g,1));
     e = random('norm',0,0.02,2,length(theta)); % zero mean noise
     for i = 1:(size(g,2)-1)
         for j=1:(size(g,3)-1)
-        sum1 = sum1 + q;
+        sum1 = sum1 + norm(cat(2,control{5}(i),control{6}(i))-desired_traj(1:2,i))^2;
         end
     end
     
@@ -41,22 +42,22 @@ addpath('../DMP-LWR')
         S(:,i,j) = phi + sum1(j) + sum2(j);
         end
     end
-   
 end
 
-function P=compute_P(S, r)
+function P=compute_P(S)
+    lambda=0.95;
     P=[];
     sum_P_i=[];
     for i=1:size(S, 2)
         sum_at_i=0;
         for k=1:size(S, 3)
-            sum_at_i=sum_at_i+exp(-(1/r.lambda)*S(:,i,k));
+            sum_at_i=sum_at_i+exp(-(1/lambda)*S(:,i,k));
         end
         sum_P_i=[sum_P_i,sum_at_i];
     end
     for k=1:size(S, 3)
         for i=1:size(S, 2)
-            P(:,i,k)= exp(-(1/r.lambda)*S(:,i,k))/sum_P_i(i);
+            P(:,i,k)= exp(-(1/lambda)*S(:,i,k))/sum_P_i(i);
         end
     end
 end
