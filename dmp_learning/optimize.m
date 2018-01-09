@@ -6,7 +6,7 @@ function [param, cost, graph, param_log] = optimize(data, start, n)
     w = waitbar(0);
     for i=1:n
         waitbar(i/n, w, strcat(num2str(param.K), ', ', num2str(param.D), ', ', num2str(param.as)));
-        [param, cost] = iteration(data, param, cost);
+        [param, cost] = iteration(data, param, cost, 1 - i/(n+1));
         graph = [graph cost];
         param_log = [param_log [param.K ; param.D ; param.as]];
     end
@@ -32,13 +32,13 @@ function out = randomize(start, lr)
     out.s=param(5);
 end
 
-function [best, cost] = iteration(data, param, init_cost)
+function [best, cost] = iteration(data, param, init_cost, i)
     if init_cost == -1
         r = dmpTrain(data, param);
         r = dmpReplay(r);
         init_cost = trajectory_cost(r,data);
     end
-    lr = 0.01;
+    lr = 0.01 * i;
     new_param = randomize(param, lr);
     r = dmpTrain(data, new_param);
     r = dmpReplay(r);
