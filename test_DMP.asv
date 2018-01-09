@@ -1,0 +1,36 @@
+addpath('DMP-LWR')
+addpath('imitation')
+
+%% load data
+
+name = 'sensor';
+[~, data]=get_data2(name);
+clear('name')
+
+%% chosse DMP parameters
+
+% K: Stifness coefficient
+% D: Damping coefficient
+% ng: number of gaussian
+% as: decrease of the time dx/dt = as*x
+% s: initial time'
+%        { K,       D,      ng,     as,     s }
+answer = {'5000',   '500',  '100',  '100',  '1'};
+
+par = generate_param(answer);
+clear('answer')
+
+%% train DMP
+
+r = dmpTrain(data, par);
+clear('par')
+
+%% plot DMP
+
+plot_ids = [1, 3, 14];
+for k = plot_ids
+    result=dmpReplay(r);
+    result.options=[k];
+    res=dmpPlot(data, result);
+end
+clear('plot_ids', 'result', 'k', 'res')
