@@ -27,9 +27,9 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
    %     test the algorithm
         
         S_last=S;
-        
-        [ M, S, P ] = rollout_iteration( theta, cost_function, data, control);
-        
+        for j=1:K
+            [ M, S, P ] = rollout_iteration( theta, cost_function, control{k});
+        end
         if max(S - S_last) > tolerance
             theta=update_PI2( theta_i, control, P, M, K, r);
         end

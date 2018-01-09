@@ -5,6 +5,7 @@ function r=basis_parameter(desPath, param)
     ctime=(-1*param.tau*log(lrc))/param.as;
     d=diff(c);
     c=c/d(1); % normalize for exp correctness
+    r.d1=d(1);
     r.c=c;
     r.ctime=ctime;
     r.times=desPath(3,:);

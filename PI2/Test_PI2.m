@@ -21,6 +21,7 @@ input_struct=init_PI2_learning()
 param.gx=desPath(1,end);
 param.gy=desPath(2,end);
 param.dt=desPath(3,2:end)-desPath(3,1:end-1);
+param.times=desPath(3,1:end);
 
 init_pos=[desPath(1,1);0;desPath(2,1);0];
 
