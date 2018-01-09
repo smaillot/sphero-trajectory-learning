@@ -12,7 +12,8 @@ function struct=genDesiredTrajectory(n, resolution)
         if k==0
             prompt={'select initial point [X;Y]'};
             uiwait(msgbox('Write your points','Data_Collecting','modal'))
-            x=inputdlg(prompt);
+            default={'[0;0]'};
+            x=inputdlg(prompt,'enter',1,default);
             position=str2num(x{1});
             movement=cat(1,position,0);
         else

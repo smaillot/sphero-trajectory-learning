@@ -1,8 +1,8 @@
 function input_struct=init_PI2_learning()
     %% PMD parameter
     dlg_title="choose PMD parameter";
-    prompt={'ng, number of gaussian', 'as, decrease of the time dx/dt = as*x','s, initial time','K, Stifness coefficient', 'D, Damping coefficient'};
-    default={'20','1','1','5000','500'};
+    prompt={'ng, number of gaussian', 'as, decrease of the time dx/dt = as*x','s, initial time','K, Stifness coefficient', 'D, Damping coefficient','tau'};
+    default={'2','1','1','5000','500','1'};
     uiwait(msgbox('Choose PMD parameter','Parameter','modal'))
     num_lines = 1;
     answer= inputdlg(prompt,dlg_title,num_lines, default);
@@ -10,8 +10,21 @@ function input_struct=init_PI2_learning()
     input_struct.PMD.ng=str2num(answer{1});
     input_struct.PMD.as=str2num(answer{2});
     input_struct.PMD.s=str2num(answer{3});
-    input_struct.PMD.K=str2num(answer{3});
-    input_struct.PMD.D=str2num(answer{3});
+    input_struct.PMD.K=str2num(answer{4});
+    input_struct.PMD.D=str2num(answer{5});
+    input_struct.PMD.tau=str2num(answer{6});
+    
+    %% Iteration parameter
+    dlg_title="choose iteration parameter";
+    prompt={'Gamma'};
+    default={'0.98'};
+    uiwait(msgbox('Choose iteration parameter','Parameter','modal'))
+    num_lines = 1;
+    answer5= inputdlg(prompt,dlg_title,num_lines, default);
+    uiwait(msgbox('Iteration parameter entered','Parameter','modal'))
+    input_struct.iteration.gamma=str2num(answer5{1});
+    
+    
     %% Cost function parameter
     
     dlg_title="choose cost function parameter";
@@ -43,12 +56,22 @@ function input_struct=init_PI2_learning()
     
     dlg_title="choose initial weights of your basis functions";
     a='Enter your vector of weights [ ; ; ;... ; ] (';
-    b='times)';
-    prompt={cat(2,a,num2str(g.ng),b)};
+    b='times) for x';
+    prompt={cat(2,a,num2str(input_struct.PMD.ng),b)};
+    default={'[0;0]'};
     uiwait(msgbox('Choose initial weights','Parameter','modal'))
     num_lines = 1;
-    answer= inputdlg(prompt,dlg_title,num_lines, default);
-    theta_i=str2num(answer);
+    answer4= inputdlg(prompt,dlg_title,num_lines, default)
+    input_struct.theta_i.x=str2num(answer4{1});
+    
+    dlg_title="choose initial weights of your basis functions";
+    a='Enter your vector of weights [ ; ; ;... ; ] (';
+    b='times) for y';
+    prompt={cat(2,a,num2str(input_struct.PMD.ng),b)};
+    uiwait(msgbox('Choose initial weights','Parameter','modal'))
+    num_lines = 1;
+    answer4= inputdlg(prompt,dlg_title,num_lines, default)
+    input_struct.theta_i.y=str2num(answer4{1});
     
 end
 

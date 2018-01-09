@@ -8,7 +8,7 @@ function data=rollout_command(param,pos_ini, K, sigma, gamma, nb_update, theta_i
         K=param.K;
         D=param.D;
         tau=param.tau;
-        dt=param.dt;
+        dt=param.dt(1);
         gx=param.gx;
         gy=param.gy;
         sec_Term=[];
@@ -39,7 +39,7 @@ function data=rollout_command(param,pos_ini, K, sigma, gamma, nb_update, theta_i
                     u=[u; dx];
                     sec_Term=[sec_Term; theta_ir'*basef];
                 else
-                    dy=(1-D*dt/tau)*dy+K*(gx-y)+theta_ir'*basef;
+                    dy=(1-D*dt/tau)*dy+K*(gy-y)+theta_ir'*basef;
                     y=dy*dt+y;
                     pos_y=[pos_y,y];
                     u=[u; dy];

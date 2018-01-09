@@ -10,15 +10,23 @@ addpath(['../DMP-LWR']);
 % This function take the number of points in which we want our trajectory
 % to pass throgh
 
-desPath=genDesiredTrajectory(2,6)
+desPath=genDesiredTrajectory(2,6);
 
 %% Determine parameters of the DMP
 
 input_struct=init_PI2_learning()
 
+[param, cost_function, sigma, theta_i, K, gamma]=adapt_input(input_struct);
 
+param.gx=desPath(1,end);
+param.gy=desPath(2,end);
+param.dt=desPath(3,2:end)-desPath(3,1:end-1);
 
+init_pos=[desPath(1,1);0;desPath(2,1);0];
 
+r=basis_parameter(desPath, param);
+
+theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma)
 
 
 % %% Parameters of the DMP 
