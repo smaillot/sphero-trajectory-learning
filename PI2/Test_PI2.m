@@ -2,6 +2,8 @@
 % We have little chance to test our program on the real robot so this
 % file is made in order to test the program and generate plots that
 % show that it works
+close all
+
 addpath(['../imitation']);
 addpath(['../DMP-LWR']);
 
@@ -10,7 +12,7 @@ addpath(['../DMP-LWR']);
 % This function take the number of points in which we want our trajectory
 % to pass throgh
 
-desPath=genDesiredTrajectory(2,6);
+desPath=genDesiredTrajectory(1,6);
 
 %% Determine parameters of the DMP
 
@@ -27,7 +29,7 @@ init_pos=[desPath(1,1);0;desPath(2,1);0];
 
 r=basis_parameter(desPath, param);
 
-theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma)
+theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPath)
 
 
 % %% Parameters of the DMP 

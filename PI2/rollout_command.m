@@ -1,31 +1,6 @@
-function [data,r]=rollout_command(param,pos_ini, K, sigma, gamma, nb_update, theta_i, g)
+function [data,r]=rollout_command( K, sigma, gamma, nb_update, theta_i, r)
     for k=1:K
-        %% initialization
-        x=pos_ini(1);
-        dx=pos_ini(2);
-        y=pos_ini(3);
-        dy=pos_ini(3);
-        K=param.K;
-        D=param.D;
-        tau=param.tau;
-        dt=param.dt(1);
-        gx=param.gx;
-        gy=param.gy;
-        sec_Term=[];
-        pos_x=[pos_ini(1)];
-        pos_y=[pos_ini(2)];
-        r=g;
-        r.ng=param.ng;
-        r.stime=param.times;
-        r.dt=dt;
-        r.x0=pos_ini(1);
-        r.y0=pos_ini(3);
-        r.gx=gx;
-        r.gy=gy;
-        r.K=param.K;
-        r.D=param.D;
-        r.tau=param.tau;
-        
+
         %% Computation of the inputs
         eps = normrnd(0,(gamma^nb_update)*sigma,size(theta_i.x));
         theta_ir=theta_i.x+eps;
@@ -95,4 +70,5 @@ function [data,r]=rollout_command(param,pos_ini, K, sigma, gamma, nb_update, the
         data{k}{6}=result.f_replay_y;
         data{k}{7}=result.y_xr;
         data{k}{8}=result.y_yr;
+        data{k}{9}=r.stime;
     end

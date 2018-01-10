@@ -19,7 +19,7 @@ function struct=genDesiredTrajectory(n, resolution)
         else
             prompt={'selectpoint [X;Y]','Time during which it passes through'};
             uiwait(msgbox('Write your points','Data_Collecting','modal'))
-            x=inputdlg(prompt);
+            x=inputdlg(prompt,'enter');
             position=str2num(x{1});
             time=str2num(x{2});
             movement=[movement,cat(1,position,time)];

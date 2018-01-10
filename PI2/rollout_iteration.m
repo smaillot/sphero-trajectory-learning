@@ -1,10 +1,11 @@
-function [ M, S, P ] = rollout_iteration( theta, r, data, control, desired_traj)
+function [ M, S, P ] = rollout_iteration( theta, r, cost_function, data, desired_traj)
 % addpath('../DMP-LWR')
 
 %ROLLOUT_ITERATION roolout iteration to run for each k in K
     % create epsillon vect
     data2.x=data{1};
     data2.y=data{3};
+    data2.times=data{9};
     g = basis_function(r, data2);
     M = compute_M(g);
     S = compute_S(g, theta, M, control, desired_traj);

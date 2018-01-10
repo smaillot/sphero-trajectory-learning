@@ -1,4 +1,4 @@
-function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPath)
+function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma)
     % parameters :
     % r : immediate cost, 
     % theta_i, initial weights of the basis function
@@ -31,18 +31,18 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
         r.K=param.K;
         r.D=param.D;
         r.tau=param.tau;
-        
-        [contr, r]=rollout_command( K, sigma, gamma, nb_update, theta_i, r);
-        plot_trajectory(contr,K)
+        r.times=pa
+        control=rollout_command( K, sigma, gamma, nb_update, theta_i, r);
+        plot_trajectory(control,K)
    %     data=execute_RO(control, init_pos, g); % in commentary when we
    %     test the algorithm
         
         S_last=S;
         for j=1:K
-            [ M, S, P ] = rollout_iteration( theta, r, cost_function, contr{j}, desPath);
+            [ M, S, P ] = rollout_iteration( theta, cost_function, control{j});
         end
         if max(S - S_last) > tolerance
-            theta=update_PI2( theta_i, contr, P, M, K, r);
+            theta=update_PI2( theta_i, control, P, M, K, r);
         end
     end
 end
