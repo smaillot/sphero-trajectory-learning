@@ -55,16 +55,18 @@ function P=compute_P(S)
     lambda=0.95;
     P=[];
     sum_P_i=[];
-    for i=1:size(S, 2)
-        sum_at_i=0;
-        for k=1:size(S, 3)
-            sum_at_i=sum_at_i+exp(-(1/lambda)*S(:,i,k));
-        end
-        sum_P_i=[sum_P_i,sum_at_i];
-    end
-    for k=1:size(S, 3)
+    for a=1:2
         for i=1:size(S, 2)
-            P(:,i,k)= exp(-(1/lambda)*S(:,i,k))/sum_P_i(i);
+            sum_at_i=0;
+            for k=1:size(S, 3)
+                sum_at_i=sum_at_i+exp(-(1/lambda)*S(a,i,k));
+            end
+                sum_P_i=[sum_P_i,sum_at_i];
+        end
+        for k=1:size(S, 3)
+            for i=1:size(S, 2)
+                P(a,i,k)= exp(-(1/lambda)*S(a,i,k))/sum_P_i(i);
+            end
         end
     end
 end
