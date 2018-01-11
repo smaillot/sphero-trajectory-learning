@@ -17,6 +17,7 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
     tolerance = 1e-5;
     S_last = -1;
     S = 1;
+    S_k = [];
     nb_update=0;
     theta=theta_i;
     while abs(S - S_last) > tolerance
@@ -40,8 +41,9 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
         S_last=S;
         for j=1:K
             [ M, S ] = rollout_iteration( theta, r, cost_function, contr{j}, desPath);
+            S_k = cat(3,S_k,S); 
         end
-        P = compute_P(S);
+        P = compute_P(S_k');
         
         if max(S - S_last) > tolerance
             theta=update_PI2( theta_i, contr, P, M, K, r);

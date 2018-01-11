@@ -143,14 +143,14 @@ result.options=[k];
 res=dmpPlot(data, result);
 
 % Now we generate the command matrix of the Sphero (1rst line is the speed,
-% 2nd line is the angle, 3rd line is the time)
+% d,alpha,result.times);2nd line is the angle, 3rd line is the time)
 speed=[];
 alpha=[];
 for k=1:length(result.yd_xr)
 speed=[speed, norm(result.yd_xr(k),result.yd_yr(k))];
 alpha=[alpha, atan2(result.yd_yr(k),result.yd_xr(k))];
 end
-command_matrix=cat(1,speed,alpha,result.times);
+command_matrix=cat(1,spee
 
 
 

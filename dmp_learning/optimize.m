@@ -1,6 +1,6 @@
 function [param, cost, graph, param_log] = optimize(data, start, n)    
     param = start;
-    cost = -1;
+    cost = 1000;
     graph = [];
     param_log = [];
     w = waitbar(0);
@@ -38,7 +38,7 @@ function [best, cost] = iteration(data, param, init_cost, i)
         r = dmpReplay(r);
         init_cost = trajectory_cost(r,data);
     end
-    lr = 0.01 * i;
+    lr = 0.001 * i;
     new_param = randomize(param, lr);
     r = dmpTrain(data, new_param);
     r = dmpReplay(r);

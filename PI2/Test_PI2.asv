@@ -16,7 +16,7 @@ addpath(['../DMP-LWR']);
 
 %% Determine parameters of the DMP
 
-%input_struct=init_PI2_learning()
+input_struct=init_PI2_learning()
 
 [param, cost_function, sigma, theta_i, K, gamma]=adapt_input(input_struct);
 

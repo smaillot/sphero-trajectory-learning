@@ -5,13 +5,10 @@ function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_tr
     % create epsillon vect
     data2.x=data{1};
     data2.y=data{3};
-    data2.ex=data{2};
-    data2.ey=data{4};
     data2.times=data{9};
     g = basis_function(r, data2);
-    M = compute_M(g);
-    S = compute_S(g, theta, M, data2, desired_traj, cost_function, 'x');
-    S = [S compute_S(g, theta, M, data2, desired_traj, cost_function, 'y')];
+    M = compute_M(g)
+    S = compute_S(g, theta, M, data2, desired_traj, cost_function, l);
 %    P = compute_P(S);
 end
 
@@ -26,30 +23,21 @@ function M = compute_M (g)
     end
 end
 
-function S = compute_S (g, theta, M, data, desired_traj, cost_function, param)
+function S = compute_S (g, theta, M, data, desired_traj, cost_function, l)
     addpath('../DMP-LWR')
     S=[];
     sum1=0;
     sum2=0;
-    if param == 'x'
-        e = data.ex;
-    else
-        e = data.ey;
-    end
+    e = [data.
     psi=terminal_cost([data.x(end);data.y(end)],desired_traj(1:2,end), cost_function.pena_final);
-    for i = 1:(size(g,2)-1)
+    for i = 1:(size(g,3)-1)
         for j=i+1:(size(g,3)-1)
             sum1 = sum1 + cost_function.pena_path*norm(cat(2,data.x(i),data.y(i))-desired_traj(1:2,i))^2;
         end
         for j=i+1:size(g,3)
-            if param == 'x'
-                theta_mat = theta.x;
-            else
-                theta_mat = theta.y;
-            end
-            sum2 = (theta_mat+M(:,:,i,j)*e)'*cost_function.pena_input*(theta_mat+M(:,:,i,j)*e);
+            sum2 = (theta+M(:,:,i,j)*e)'*cost_function.pena_input*(theta+M(:,:,i,j)*e);
         end
-        S(:,i)=psi + sum1 + 1/2*sum2;
+        S(:,i,l)=psi + sum1(j) + 1/2*sum2(j);
     end
 
 end
