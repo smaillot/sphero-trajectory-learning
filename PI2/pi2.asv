@@ -44,13 +44,12 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
         for j=1:K
             [ M, S ] = rollout_iteration( theta, r, cost_function, contr{j}, desPath);
             S_k = cat(3,S_k,S'); 
-            M_k.x = cat(4, M_k.x, M.x);
-            M_k.y = cat(4, M_k.y, M.y);
+            M_k.x = cat(4, M_k., Mk.x
         end
         P = compute_P(S_k);
         
         if max(S - S_last) > tolerance
-            theta=update_PI2( theta_i, contr, P, M_k, K, r);
+            theta=update_PI2( theta_i, contr, P, M, K, r);
         end
     end
 end
