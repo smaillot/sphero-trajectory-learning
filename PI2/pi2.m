@@ -15,8 +15,7 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
     addpath('../DMP-LWR')
     
     tolerance = 1e-5;
-    S_last = -1;
-    S = zeros(length(param.times),2 ,K);
+    S_last = zeros(length(param.times),2 ,K);
     S_k = [];
     M_k.x = [];
     M_k.y = [];
@@ -28,6 +27,13 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
     
     while max(S1,S2) > tolerance && z<100
         
+        if z>=1
+            S_last=S_k;
+        end
+        
+        S_k = [];
+        M_k.x = [];
+        M_k.y = [];
         r.ng=param.ng;
         r.stime=param.times;
         r.dt=param.dt(1);
@@ -44,7 +50,8 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
    %     data=execute_RO(control, init_pos, g); % in commentary when we
    %     test the algorithm
         
-        S_last=S;
+        
+        
         for j=1:K
             [ M, S ] = rollout_iteration( theta, r, cost_function, contr{j}, desPath);
             S_k = cat(3,S_k,S'); 
@@ -52,10 +59,18 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             M_k.y = cat(4, M_k.y, M.y);
         end
         P = compute_P(S_k);
-        S_k(:,:,1)
-        S_last(:,:,1)
-        S1=norm(S_k(:,:,1)-S_last(:,:,1));
-        S2=norm(S_k(:,:,2)-S_last(:,:,2));
+        S_k
+        S_last
+        Sl1=S_last(:,:,1);
+        Sl2=S_last(:,:,2);
+        if size(S_last(:,:,1))~=size(S_k(:,:,1))
+            Sl1=S_last(:,:,1)';
+        end
+        if size(S_last(:,:,2))~=size(S_k(:,:,2))
+            Sl2=S_last(:,:,2)';
+        end
+        S1=norm(S_k(:,:,1)-Sl1);
+        S2=norm(S_k(:,:,2)-Sl2);
         if max(S1,S2) > tolerance
             theta.x=update_PI2( theta.x, contr, P, M_k.x, K, r);
             theta.y=update_PI2( theta.y, contr, P, M_k.y, K, r);
