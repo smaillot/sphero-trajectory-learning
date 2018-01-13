@@ -1,6 +1,6 @@
 function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_traj, l)
 % addpath('../DMP-LWR')
-
+ 
 %ROLLOUT_ITERATION roolout iteration to run for each k in K
     % create epsillon vect
     data2.x=data{1};
@@ -9,51 +9,61 @@ function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_tr
     data2.ey=data{4};
     data2.times=data{9};
     g = basis_function(r, data2);
-    M = compute_M(g);
-    S = compute_S(g, theta, M, data2, desired_traj, cost_function, 'x');
-    S = [S compute_S(g, theta, M, data2, desired_traj, cost_function, 'y')];
+    Mx = compute_M(g, 'x');
+    My = compute_M(g, 'y');
+    Sx = compute_S(g, theta, Mx, data2, desired_traj, cost_function, 'x');
+    Sy = compute_S(g, theta, My, data2, desired_traj, cost_function, 'y');
+    M.x = Mx;
+    M.y = My;
+    S = [Sx;Sy];
 %    P = compute_P(S);
 end
-
-function M = compute_M (g)
-    R = eye(size(g,1));
-    M = zeros(size(g, 1), size(g, 1), size(g, 2), size(g, 3));
-    for t=1:size(g, 3)
-        for j=1:size(g, 2)
-            g1 = g(:,j,t);
-            M(:,:,j,t) = R \ (g1 * g1' / (g1' / R * g1));
-        end
+ 
+function M = compute_M (g, param)
+    n = size(g,1);
+    N = size(g,3);
+    R = eye(n);
+    if param == 'x'
+        g = squeeze(g(1,:,:));
+    else
+        g = squeeze(g(2,:,:));
+    end
+    M = zeros(n, n, N);
+    for t=1:N
+            g1 = g(:,t);
+            M(:,:,t) = R \ (g1 * g1' / (g1' / R * g1));
     end
 end
 
 function S = compute_S (g, theta, M, data, desired_traj, cost_function, param)
     addpath('../DMP-LWR')
-    S=[];
+    N = length(data.times);
+    S=zeros(1,N);
     sum1=0;
     sum2=0;
     if param == 'x'
         e = data.ex;
+        psi=terminal_cost(data.x(end),desired_traj(1,end), cost_function.pena_final);
     else
         e = data.ey;
+        psi=terminal_cost(data.y(end),desired_traj(2,end), cost_function.pena_final);
     end
-    psi=terminal_cost([data.x(end);data.y(end)],desired_traj(1:2,end), cost_function.pena_final);
-    for i = 1:(size(g,2)-1)
-        for j=i+1:(size(g,3)-1)
+    for i = 1:N
+        for j=i:(N-1)
             sum1 = sum1 + cost_function.pena_path*norm(cat(2,data.x(i),data.y(i))-desired_traj(1:2,i))^2;
-        end
-        for j=i+1:size(g,3)
+            
             if param == 'x'
                 theta_mat = theta.x;
             else
                 theta_mat = theta.y;
             end
-            sum2 = (theta_mat+M(:,:,i,j)*e)'*cost_function.pena_input*(theta_mat+M(:,:,i,j)*e);
+            sum2 = (theta_mat+M(:,:,j)*e)'*cost_function.pena_input*(theta_mat+M(:,:,j)*e);
         end
-        S(:,i)=psi + sum1 + 1/2*sum2;
+        S(i)=psi + sum1 + 1/2*sum2;
     end
-
+ 
 end
-
+ 
 % function P=compute_P(S)
 %     lambda=0.95;
 %     P=[];
