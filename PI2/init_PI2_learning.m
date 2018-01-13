@@ -2,7 +2,7 @@ function input_struct=init_PI2_learning()
     %% PMD parameter
     dlg_title="choose PMD parameter";
     prompt={'ng, number of gaussian', 'as, decrease of the time dx/dt = as*x','s, initial time','K, Stifness coefficient', 'D, Damping coefficient','tau'};
-    default={'2','1','1','5000','500','1'};
+    default={'2','1','1','1','1','1'};
     uiwait(msgbox('Choose PMD parameter','Parameter','modal'))
     num_lines = 1;
     answer= inputdlg(prompt,dlg_title,num_lines, default);

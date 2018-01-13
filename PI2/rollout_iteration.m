@@ -1,4 +1,4 @@
-function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_traj, l)
+function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_traj)
 % addpath('../DMP-LWR')
  
 %ROLLOUT_ITERATION roolout iteration to run for each k in K

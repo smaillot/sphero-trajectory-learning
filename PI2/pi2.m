@@ -16,13 +16,17 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
     
     tolerance = 1e-5;
     S_last = -1;
-    S = 1;
+    S = zeros(length(param.times),2 ,K);
     S_k = [];
     M_k.x = [];
     M_k.y = [];
     nb_update=0;
     theta=theta_i;
-    while abs(S - S_last) > tolerance
+    S2=0;
+    S1=100;
+    z=0;
+    
+    while max(S1,S2) > tolerance && z<100
         
         r.ng=param.ng;
         r.stime=param.times;
@@ -48,10 +52,15 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             M_k.y = cat(4, M_k.y, M.y);
         end
         P = compute_P(S_k);
-        
-        if max(S - S_last) > tolerance
-            theta=update_PI2( theta_i, contr, P, M_k, K, r);
+        S_k(:,:,1)
+        S_last(:,:,1)
+        S1=norm(S_k(:,:,1)-S_last(:,:,1));
+        S2=norm(S_k(:,:,2)-S_last(:,:,2));
+        if max(S1,S2) > tolerance
+            theta.x=update_PI2( theta.x, contr, P, M_k.x, K, r);
+            theta.y=update_PI2( theta.y, contr, P, M_k.y, K, r);
         end
+        z=z+1;
     end
 end
 
