@@ -1,6 +1,14 @@
 function r=basis_parameter(desPath, param)
-    incr=(max(desPath(3,:))-min(desPath(3,:)))/(param.ng-1);
-    c=min(desPath(3,:)):incr:max(desPath(3,:));
+    
+    stime = [];
+    for i=1:length(desPath(3,:))
+        t=desPath(3,i);
+        s=exp((-1*param.as*t)/param.tau);
+        stime=[stime s];
+    end
+    
+    incr=(max(stime)-min(stime))/(param.ng-1);
+    c=min(stime):incr:max(stime);
     lrc=fliplr(c);
     ctime=(-1*param.tau*log(lrc))/param.as;
     d=diff(c);

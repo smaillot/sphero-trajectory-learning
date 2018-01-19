@@ -50,7 +50,7 @@ function S = compute_S (g, theta, M, data, desired_traj, cost_function, param)
     end
     for i = 1:N
         for j=i:(N-1)
-            sum1 = sum1 + cost_function.pena_path*norm(cat(2,data.x(i),data.y(i))-desired_traj(1:2,i))^2;
+            sum1 = sum1 + cost_function.pena_path*norm(cat(2,data.x(i),data.y(i))-desired_traj(1:2,i));
             
             if param == 'x'
                 theta_mat = theta.x;

@@ -4,10 +4,10 @@ addpath('dmp_learning')
 
 %% load data
 
-%name = 'sensor';
+name = 'sensor';
 %name = 'circleresult';
 %name = 'sinresult';
-name = '8result';
+%name = '8result';
 [~, data]=get_data2(name);
 clear('name')
 
