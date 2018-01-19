@@ -12,7 +12,7 @@ function theta_i=update_PI2( theta_i, control, Path_weight, M, K, basis)
     for i=1:size(Path_weight,2) % Through the time
         compdtheta=0;
         for j=1:K % Through the iterations
-            compdtheta=compdtheta+Path_weight(:,i,j)'*M(:,:,i,j)*cat(2,control{j}{2},control{j}{4})'; % For me before, M was a number and not a matrix
+            compdtheta=compdtheta+M(:,:,i,j)*cat(2,control{j}{2},control{j}{4})*Path_weight(:,i,j); % For me before, M was a number and not a matrix
         end 
         ddtheta(:,i)=compdtheta;
     end

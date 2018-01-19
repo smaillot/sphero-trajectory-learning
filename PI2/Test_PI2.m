@@ -12,7 +12,7 @@ addpath(['../DMP-LWR']);
 % This function take the number of points in which we want our trajectory
 % to pass throgh
 
-% desPath=genDesiredTrajectory(2,10);
+%desPath=genDesiredTrajectory(2,10);
 
 %% Determine parameters of the DMP
 
@@ -29,7 +29,7 @@ init_pos=[desPath(1,1);0;desPath(2,1);0];
 
 r=basis_parameter(desPath, param);
 
-theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPath)
+theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPath);
 
 
 % %% Parameters of the DMP 
