@@ -12,7 +12,7 @@ addpath(['../DMP-LWR']);
 % This function take the number of points in which we want our trajectory
 % to pass throgh
 
-% desPath=genDesiredTrajectory(1,6);
+% desPath=genDesiredTrajectory(2,10);
 
 %% Determine parameters of the DMP
 

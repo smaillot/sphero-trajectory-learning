@@ -25,12 +25,12 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
     S1=100;
     z=0;
     
-    while max(S1,S2) > tolerance && z<100
+    while max(S1,S2) > tolerance && z<50
         
         if z>=1
             S_last=S_k;
         end
-        
+        S_last;
         S_k = [];
         M_k.x = [];
         M_k.y = [];
@@ -58,9 +58,8 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             M_k.x = cat(4, M_k.x, M.x);
             M_k.y = cat(4, M_k.y, M.y);
         end
+        
         P = compute_P(S_k);
-        S_k
-        S_last
         Sl1=S_last(:,:,1);
         Sl2=S_last(:,:,2);
         if size(S_last(:,:,1))~=size(S_k(:,:,1))

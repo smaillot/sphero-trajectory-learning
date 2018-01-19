@@ -64,9 +64,9 @@ function [data,r]=rollout_command( K, sigma, gamma, nb_update, theta_i, r)
 %              end
 %         end
         result=dmpReplay(r);
-        data{k}{1}=result.yd_xr
+        data{k}{1}=result.yd_xr;
         data{k}{2}=eps;
-        data{k}{3}=result.yd_yr
+        data{k}{3}=result.yd_yr;
         data{k}{4}=eps;
         data{k}{5}=result.f_replay_x;
         data{k}{6}=result.f_replay_y;

@@ -9,8 +9,8 @@ function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_tr
     data2.ey=data{4};
     data2.times=data{9};
     g = basis_function(r, data2);
-    Mx = compute_M(g, 'x');
-    My = compute_M(g, 'y');
+    Mx = compute_M(g, 'x',r);
+    My = compute_M(g, 'y',r);
     Sx = compute_S(g, theta, Mx, data2, desired_traj, cost_function, 'x');
     Sy = compute_S(g, theta, My, data2, desired_traj, cost_function, 'y');
     M.x = Mx;
@@ -19,16 +19,16 @@ function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_tr
 %    P = compute_P(S);
 end
  
-function M = compute_M (g, param)
-    n = size(g,1);
+function M = compute_M (g, param,r)
+    n1 = r.ng;
     N = size(g,3);
-    R = eye(n);
+    R = eye(n1);
     if param == 'x'
         g = squeeze(g(1,:,:));
     else
         g = squeeze(g(2,:,:));
     end
-    M = zeros(n, n, N);
+    M = zeros(n1, n1, N);
     for t=1:N
             g1 = g(:,t);
             M(:,:,t) = R \ (g1 * g1' / (g1' / R * g1));
