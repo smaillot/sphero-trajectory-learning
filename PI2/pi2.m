@@ -58,7 +58,7 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             M_k.y = cat(4, M_k.y, M.y);
         end
         
-        P = compute_P(S_k);
+        P = compute_P(S_k)
         Sl1=S_last(:,:,1);
         Sl2=S_last(:,:,2);
         if size(S_last(:,:,1))~=size(S_k(:,:,1))
@@ -74,24 +74,27 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             theta.y=update_PI2( theta.y, contr, P, M_k.y, K, r);
         end
         z=z+1;
+        a=theta.x
+        b=theta.y
     end
 end
 
-function P=compute_P(S)
-    lambda=0.95;
+function P=compute_P(S_k)
+    lambda=50;
     P=[];
     sum_P_i=[];
     for a=1:2
-        for i=1:size(S, 2)
+        for i=1:size(S_k, 1)
             sum_at_i=0;
-            for k=1:size(S, 3)
-                sum_at_i=sum_at_i+exp(-(1/lambda)*S(a,i,k));
+            for k=1:size(S_k, 3)
+                sum_at_i=sum_at_i+exp(-(1/lambda)*S_k(i,a,k));
             end
-                sum_P_i=[sum_P_i,sum_at_i];
+            sum_P_i=[sum_P_i,sum_at_i];
         end
-        for k=1:size(S, 3)
-            for i=1:size(S, 2)
-                P(a,i,k)= exp(-(1/lambda)*S(a,i,k))/sum_P_i(i);
+        sum_P_i
+        for k=1:size(S_k, 3)
+            for i=1:size(S_k, 1)
+                P(a,i,k)= exp(-(1/lambda)*S_k(i,a,k))/sum_P_i(i);
             end
         end
     end

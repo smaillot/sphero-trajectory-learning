@@ -23,7 +23,7 @@ function [ g ] = basis_function_time( r, rec, j )
         psum_y(i)=psiF(r.h, r.c, r.stime(j)/r.d1,i)*r.w_y(i);
         pdiv_y=pdiv_y+psiF(r.h, r.c, r.stime(j)/r.d1,i);
     end
-    g = [(psum_x/pdiv_x)*(r.gx-r.x0);(psum_y/pdiv_y)*(r.gy-r.y0)]; 
+    g = [(psum_x/pdiv_x)*r.stime(j)*(r.gx-r.x0);(psum_y/pdiv_y)*r.stime(j)*(r.gy-r.y0)]; 
 end
 
 function r=psiF(h, c, s, i)

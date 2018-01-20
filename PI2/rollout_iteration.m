@@ -31,7 +31,7 @@ function M = compute_M (g, param,r)
     M = zeros(n1, n1, N);
     for t=1:N
             g1 = g(:,t);
-            M(:,:,t) = R \ (g1 * g1' / (g1' / R * g1));
+            M(:,:,t) = R^(-1)*(g1 * g1' / (g1' / R * g1));
     end
 end
 
@@ -49,15 +49,14 @@ function S = compute_S (g, theta, M, data, desired_traj, cost_function, param)
         psi=terminal_cost(data.y(end),desired_traj(2,end), cost_function.pena_final);
     end
     for i = 1:N
-        for j=i:(N-1)
+        for j=i+1:(N-1)
             sum1 = sum1 + cost_function.pena_path*norm(cat(2,data.x(i),data.y(i))-desired_traj(1:2,i));
-            
             if param == 'x'
                 theta_mat = theta.x;
             else
                 theta_mat = theta.y;
             end
-            sum2 = (theta_mat+M(:,:,j)*e)'*cost_function.pena_input*(theta_mat+M(:,:,j)*e);
+            sum2 = sum2 + (theta_mat+M(:,:,j)*e)'*cost_function.pena_input*(theta_mat+M(:,:,j)*e);
         end
         S(i)=psi + sum1 + 1/2*sum2;
     end
