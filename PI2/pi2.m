@@ -35,7 +35,6 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
         M_k.x = [];
         M_k.y = [];
         r.ng=param.ng;
-        r.stime=param.times;
         r.dt=param.dt(1);
         r.x0=init_pos(1);
         r.y0=init_pos(3);

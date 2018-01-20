@@ -5,8 +5,8 @@ function [param, cost_function, sigma, theta_i, K, gamma]=adapt_input(input_stru
     param.D=input_struct.PMD.D;
     param.as=input_struct.PMD.as;
     param.s=input_struct.PMD.s;
-    param.tau=input_struct.PMD.tau;
-    
+    %param.tau=input_struct.PMD.tau;
+    param.tau=33.5;
     cost_function=input_struct.cost_function;
     
     sigma=0.1;

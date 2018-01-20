@@ -18,4 +18,6 @@ function r=basis_parameter(desPath, param)
     r.ctime=ctime;
     r.times=desPath(3,:);
     r.h=ones(1,param.ng);
+    r.stime=stime;
+    r.as=0.001;
 end
