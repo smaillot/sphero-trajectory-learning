@@ -74,8 +74,6 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             theta.y=update_PI2( theta.y, contr, P, M_k.y, K, r);
         end
         z=z+1;
-        a=theta.x
-        b=theta.y
     end
 end
 

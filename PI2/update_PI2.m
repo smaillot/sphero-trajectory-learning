@@ -16,7 +16,6 @@ function theta_i=update_PI2( theta_i, control, Path_weight, M, K, basis)
         end 
         ddtheta(:,i)=compdtheta;
     end
-    a=ddtheta
     for k=1:length(theta_i)
         comp=0;
         const=0;
@@ -26,7 +25,6 @@ function theta_i=update_PI2( theta_i, control, Path_weight, M, K, basis)
         end
         dtheta(k)=comp/const;
     end  
-    b=dtheta
     
     theta_i=theta_i+dtheta(:,1);
 end 
