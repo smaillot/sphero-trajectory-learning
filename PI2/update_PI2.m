@@ -21,8 +21,8 @@ function theta_i=update_PI2( theta_i, control, Path_weight, M, K, basis)
         comp=0;
         const=0;
         for i=1:N-1
-            comp=comp+(N-i)*psiF(basis.h, basis.c, basis.times(i), k)*ddtheta(k,i);
-            const=const+(N-i)*psiF(basis.h, basis.c, basis.times(i), k);
+            comp=comp+(N-i)*psiF(basis.h, basis.c, basis.stime(i)/basis.d1, k)*ddtheta(k,i);
+            const=const+(N-i)*psiF(basis.h, basis.c, basis.stime(i)/basis.d1, k);
         end
         dtheta(k)=comp/const;
     end  
