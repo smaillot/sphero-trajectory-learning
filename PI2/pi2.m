@@ -1,4 +1,4 @@
-function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPath)
+function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPat, sph)
     % parameters :
     % r : immediate cost, 
     % theta_i, initial weights of the basis function
@@ -46,8 +46,7 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
         
         [contr, r]=rollout_command( K, sigma, gamma, nb_update, theta_i, r);
         plot_trajectory(contr,K)
-   %     data=execute_RO(control, init_pos, g); % in commentary when we
-   %     test the algorithm
+        data=execute_RO(contr, init_pos, param, K, sph); % in commentary when we test the algorithm
         
         
         
@@ -74,6 +73,8 @@ function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma
             theta.y=update_PI2( theta.y, contr, P, M_k.y, K, r);
         end
         z=z+1;
+        a=theta.x;
+        b=theta.y;
     end
 end
 

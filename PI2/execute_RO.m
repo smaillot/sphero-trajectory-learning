@@ -1,6 +1,7 @@
-function data=execute_RO(control, init_pos, g, K)
+function data=execute_RO(control, init_pos, g, K, sph)
     % We have g a structure with 3 lists. The first one is c for all the
     % gaussian, then h and the time
+    max_speed = 60;
     prompt='Begin ? {y/n}';
     uiwait(msgbox('execute the first roll out?','Data_Collecting','modal'))
     x=inputdlg(prompt);
@@ -21,7 +22,7 @@ function data=execute_RO(control, init_pos, g, K)
                 end
             end
             for i=1:length(g.times)
-                com_speed=[com_speed, sqrt(speed.x(i)^2+speed.y(i)^2)];
+                com_speed=[com_speed, max(max_speed, sqrt(speed.x(i)^2+speed.y(i)^2)]);
                 com_angle=[com_angle, atan2(speed.y(i),speed.x(i))*180/3.14];
             end
             command=cat(1,com_speed,com_angle,g.times);
