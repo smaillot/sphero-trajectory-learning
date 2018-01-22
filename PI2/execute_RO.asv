@@ -3,11 +3,10 @@ function data=execute_RO(control, init_pos, g, K, sph)
     % gaussian, then h and the time
     data=[];
     max_speed = 60;
-%     prompt='Begin ? {y/n}';
-%     uiwait(msgbox('execute the first roll out?','Data_Collecting','modal'))
-%     x=inputdlg(prompt);
-%     x=x{1};
-    pause();
+    prompt='Begin ? {y/n}';
+    uiwait(msgbox('execute the first roll out?','Data_Collecting','modal'))
+    x=inputdlg(prompt);
+    x=x{1};
     com_speed=[];
     com_angle=[];
     for k=1:K
@@ -15,15 +14,19 @@ function data=execute_RO(control, init_pos, g, K, sph)
         speed.y=[];
         com_speed=[];
         com_angle=[];
-%         if x=='y'
+        if x=='y'
             for j=1:2
                 if j==1
-                    speed.x=control{k}{1}/100;
+                    speed.x=control{k}{7}/1000;
                 else
-                    speed.y=control{k}{3}/100;
+                    speed.y=control{k}{8}/1000;
                 end
             end
-            command=cat(1,min(max_speed, sqrt(speed.x.^2+speed.y.^2)),atan2(speed.x,speed.y)*180/pi);
+            for i=1:length(g.times)
+                com_speed=[com_speed, min(max_speed, sqrt(speed.x(i)^2+speed.y(i)^2))];
+                com_angle=[com_angle, atan2(speed.y(i),speed.x(i))*180/pi];
+            end
+            command=cat(1,com_speed,com_angle,g.times);
             
             %% Command Part of Susana
             % send command to sphero
@@ -52,11 +55,11 @@ function data=execute_RO(control, init_pos, g, K, sph)
         %% End of command part
         strcat('roll out number',num2str(k));
         end
-%         prompt='end of recording';
-%         uiwait(msgbox('Execute the next roll out?','Data_Collecting','modal'))
-%         x=inputdlg(prompt);
-%         x=x{1};
-%         if x=='n'
-%             break;
-%         end
+        prompt='end of recording';
+        uiwait(msgbox('Execute the next roll out?','Data_Collecting','modal'))
+        x=inputdlg(prompt);
+        x=x{1};
+        if x=='n'
+            break;
+        end
     end

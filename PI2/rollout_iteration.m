@@ -3,8 +3,8 @@ function [ M, S ] = rollout_iteration( theta, r, cost_function, data, desired_tr
  
 %ROLLOUT_ITERATION roolout iteration to run for each k in K
     % create epsillon vect
-    data2.x=data{1};
-    data2.y=data{3};
+    data2.x=data{7};
+    data2.y=data{8};
     data2.ex=data{2};
     data2.ey=data{4};
     data2.times=data{9};

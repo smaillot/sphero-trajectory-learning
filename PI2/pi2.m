@@ -1,4 +1,4 @@
-function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPat, sph)
+function theta = pi2(param, cost_function, r, sigma, theta_i, K, init_pos, gamma, desPath, sph)
     % parameters :
     % r : immediate cost, 
     % theta_i, initial weights of the basis function
