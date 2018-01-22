@@ -9,7 +9,7 @@ function [param, cost_function, sigma, theta_i, K, gamma]=adapt_input(input_stru
     param.tau=33.5;
     cost_function=input_struct.cost_function;
     
-    sigma=0.1;
+    sigma=100;
     
     theta_i=input_struct.theta_i;
     
