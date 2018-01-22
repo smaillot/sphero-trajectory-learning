@@ -61,4 +61,3 @@ function data=execute_RO(control, init_pos, g, K, sph)
             break;
         end
     end
-    

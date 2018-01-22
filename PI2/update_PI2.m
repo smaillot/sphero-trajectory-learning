@@ -16,17 +16,15 @@ function theta_i=update_PI2( theta_i, control, Path_weight, M, K, basis)
         end 
         ddtheta(:,i)=compdtheta;
     end
-    a=ddtheta
     for k=1:length(theta_i)
         comp=0;
         const=0;
         for i=1:N-1
-            comp=comp+(N-i)*psiF(basis.h, basis.c, basis.times(i), k)*ddtheta(k,i);
-            const=const+(N-i)*psiF(basis.h, basis.c, basis.times(i), k);
+            comp=comp+(N-i)*psiF(basis.h, basis.c, basis.stime(i)/basis.d1, k)*ddtheta(k,i);
+            const=const+(N-i)*psiF(basis.h, basis.c, basis.stime(i)/basis.d1, k);
         end
         dtheta(k)=comp/const;
     end  
-    b=dtheta
     
     theta_i=theta_i+dtheta(:,1);
 end 

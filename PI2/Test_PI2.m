@@ -4,6 +4,8 @@
 % show that it works
 close all
 
+sph=sphero();
+setsystem();
 addpath(['../imitation']);
 addpath(['../DMP-LWR']);
 
