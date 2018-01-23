@@ -1,4 +1,4 @@
-function data=execute_RO(control, init_pos, g, K, sph)
+function control=execute_RO(control, init_pos, g, K, sph)
     % We have g a structure with 3 lists. The first one is c for all the
     % gaussian, then h and the time
     data=[];
@@ -18,30 +18,45 @@ function data=execute_RO(control, init_pos, g, K, sph)
 %         if x=='y'
             for j=1:2
                 if j==1
-                    speed.x=control{k}{1}/100;
+                    speed.x=control{k}{1};
                 else
-                    speed.y=control{k}{3}/100;
+                    speed.y=control{k}{3};
                 end
             end
-            command=cat(1,min(max_speed, sqrt(speed.x.^2+speed.y.^2)),atan2(speed.x,speed.y)*180/pi);
+            command=cat(1,min(max_speed, sqrt((speed.x).^2+(speed.y).^2)),atan2(speed.x,speed.y)*180/pi);
             
             %% Command Part of Susana
             % send command to sphero
-            command
-            sph.MotionTimeout=0.2;
-            roll(sph,command(1),command(2));
+%             dt = g.times(end)-g.times(end-1);
+            dt=0.3;
+            sph.MotionTimeout = dt;
+            
+            for i= 1:size(command,2)
+            roll(sph,command(1,i),command(2,i));
+            tic
+            while toc < dt + 0.01
+            [xcur, ycur, ~, ~, ~] = sph.readLocator();
+            if length(data)==0
+                s = [double(xcur);double(ycur);toc];
+            else
+            s = [double(xcur)/100;double(ycur)/100;data(3,end)+toc];
+            end
+            data=[data,s];
+            control{k}{7} = data(1,:);
+            control{k}{8} = data(2,:);
+            control{k}{9} = data(3,:);
+            end
+            end
+            figure(2);
+            hold on
+            plot(data(1,:),data(2,:));
             % Here you have the the matrix command. 
             %The firstline is the amplitude of the speed, the second line
             %is the angle and the last line is the time of application of
             %the command.
             
              % get sensor data
-            tic
-            while toc < 6
-            [xcur, ycur, ~, ~, ~] = sph.readLocator();
-            s = [double(xcur);double(ycur);command(3) + toc];
-            data=[data,s];
-            end
+
             % For the output we would like the position of the robot and
             % the time when the measure was taken in a matrix (the first
             % line is the x position, the second line is the y position and
@@ -51,6 +66,9 @@ function data=execute_RO(control, init_pos, g, K, sph)
         
         %% End of command part
         strcat('roll out number',num2str(k));
+
+        pause();
+        calibrate(sph,0);
         end
 %         prompt='end of recording';
 %         uiwait(msgbox('Execute the next roll out?','Data_Collecting','modal'))

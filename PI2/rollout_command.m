@@ -1,4 +1,4 @@
-function [data,r]=rollout_command( K, sigma, gamma, nb_update, theta_i, r)
+function [data,r]=rollout_command( K, sigma, gamma, nb_update, theta_i, r,sph)
     addpath(['../imitation']);
     addpath(['../DMP-LWR']);
     for k=1:K
